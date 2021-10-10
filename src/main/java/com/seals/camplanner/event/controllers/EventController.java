@@ -1,6 +1,6 @@
 package com.seals.camplanner.event.controllers;
 
-import com.seals.camplanner.event.dto.EventDTO;
+import com.seals.camplanner.event.dto.EventDto;
 import com.seals.camplanner.event.models.Event;
 import com.seals.camplanner.event.services.EventService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class EventController {
 
     //TODO add treatment for the "location" parameter
     @PostMapping("/event")
-    public Event saveEvent(@RequestBody EventDTO event) {
+    public Event saveEvent(@RequestBody EventDto event) {
         return eventService.save(event);
     }
 

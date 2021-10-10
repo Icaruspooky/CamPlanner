@@ -1,12 +1,11 @@
 package com.seals.camplanner.event.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.sql.Timestamp;
 
 @Data
-public class EventDTO {
+public class EventDto {
 
     private Long id;
     private boolean privateEvent;

@@ -1,6 +1,6 @@
 package com.seals.camplanner.event.services;
 
-import com.seals.camplanner.event.dto.EventDTO;
+import com.seals.camplanner.event.dto.EventDto;
 import com.seals.camplanner.event.models.Event;
 import com.seals.camplanner.event.repositories.EventRepository;
 import com.seals.camplanner.location.models.Location;
@@ -20,7 +20,7 @@ public class EventService {
         return eventRepository.findAll();
     }
 
-    public Event save(EventDTO event) {
+    public Event save(EventDto event) {
         Event newEvent = new Event();
         newEvent.setPrivateEvent(event.isPrivateEvent());
         newEvent.setEventDate(event.getEventDate());
