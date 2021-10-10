@@ -16,7 +16,7 @@ public class EventController {
     public List<Event> getEvents() {
         return eventService.findAll();
     }
-
+    //TODO add treatment for the "location" parameter
     @PostMapping("/event")
     public Event saveEvent(@RequestBody Event event) {
         return eventService.save(event);
