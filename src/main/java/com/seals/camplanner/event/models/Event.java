@@ -1,5 +1,6 @@
 package com.seals.camplanner.event.models;
 
+import com.seals.camplanner.location.models.Location;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,5 +17,13 @@ public class Event {
     @Column(name = "event_date", nullable = false)
     private Timestamp eventDate;
 
+    @Column(name = "starts", nullable = false)
+    private Timestamp starts;
 
+    @Column(name = "ends", nullable = false)
+    private Timestamp ends;
+
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
 }
