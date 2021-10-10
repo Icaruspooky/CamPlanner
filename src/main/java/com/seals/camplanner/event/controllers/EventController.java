@@ -3,10 +3,7 @@ package com.seals.camplanner.event.controllers;
 import com.seals.camplanner.event.models.Event;
 import com.seals.camplanner.event.services.EventService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +18,17 @@ public class EventController {
     }
 
     @PostMapping("/event")
-    public Event save(@RequestBody Event event) {
+    public Event saveEvent(@RequestBody Event event) {
         return eventService.save(event);
+    }
+
+    @GetMapping("/event/{id}")
+    public Event getEvent(@PathVariable("id") Long id) {
+        return eventService.find(id);
+    }
+
+    @DeleteMapping("/event/{id}")
+    public void deleteEvent(@PathVariable("id") Long id) {
+        eventService.delete(id);
     }
 }

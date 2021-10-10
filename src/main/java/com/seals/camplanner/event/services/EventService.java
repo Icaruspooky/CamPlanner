@@ -19,4 +19,13 @@ public class EventService {
     public Event save(Event event) {
         return eventRepository.save(event);
     }
+
+    //TODO create customized exeption
+    public Event find(Long id) {
+        return eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found"));
+    }
+
+    public void delete(Long id) {
+        eventRepository.deleteById(id);
+    }
 }

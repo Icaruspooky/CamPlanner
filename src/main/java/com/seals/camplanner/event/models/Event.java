@@ -14,6 +14,9 @@ public class Event {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "private_event", nullable = false)
+    private boolean privateEvent;
+
     @Column(name = "event_date", nullable = false)
     private Timestamp eventDate;
 
