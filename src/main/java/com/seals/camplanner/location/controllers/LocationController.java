@@ -17,18 +17,18 @@ public class LocationController {
         return locationService.findAll();
     }
 
-    @PostMapping("/event")
-    public Location saveEvent(@RequestBody Location location) {
+    @PostMapping("/location")
+    public Location saveLocation(@RequestBody Location location) {
         return locationService.save(location);
     }
 
-    @GetMapping("/event/{id}")
-    public Location getEvent(@PathVariable("id") Long id) {
+    @GetMapping("/location/{id}")
+    public Location getLocation(@PathVariable("id") Long id) {
         return locationService.find(id);
     }
 
-    @DeleteMapping("/event/{id}")
-    public void deleteEvent(@PathVariable("id") Long id) {
+    @DeleteMapping("/location/{id}")
+    public void deleteLocation(@PathVariable("id") Long id) {
         locationService.delete(id);
     }
 }
