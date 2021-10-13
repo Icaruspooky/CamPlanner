@@ -25,7 +25,11 @@ public class LocationService {
         return locationRepository.findById(id).orElseThrow(() -> new RuntimeException("Location not found"));
     }
 
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         locationRepository.deleteById(id);
+    }
+
+    public void deleteAll() {
+        locationRepository.deleteAll();
     }
 }
