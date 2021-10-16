@@ -2,15 +2,13 @@ package com.seals.camplanner.location.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.seals.camplanner.location.dto.LocationDto;
 import com.seals.camplanner.location.models.Location;
 import com.seals.camplanner.location.services.LocationService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +19,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * Integration Tests for the Location endpoint. Uses MockMvc do simulate endpoint calls.
@@ -42,6 +45,8 @@ public class LocationControllerTest {
     private ObjectMapper mapper;
     @Autowired
     private LocationService locationService;
+
+    private ModelMapper modelMapper = new ModelMapper();
 
     @Test
     public void findAllWhenEmptyTest() throws Exception {
@@ -110,6 +115,28 @@ public class LocationControllerTest {
         Assertions.assertTrue(this.locationService.findAll().isEmpty());
     }
 
+    @Test
+    public void mappingLocationToLocationDtoTest() {
+        Location location = getSampleLocation();
+        LocationDto locationDto = modelMapper.map(location, LocationDto.class);
+
+        Assertions.assertEquals(location.getId(), locationDto.getId());
+        Assertions.assertEquals(location.getCountry(), locationDto.getCountry());
+        Assertions.assertEquals(location.getCity(), locationDto.getCity());
+        Assertions.assertEquals(location.getName(), locationDto.getName());
+    }
+
+    @Test
+    public void mappingLocationDtoToLocationTest() {
+        LocationDto locationDto = getSampleLocationDto();
+        Location location =  modelMapper.map(locationDto, Location.class);
+
+        Assertions.assertEquals(locationDto.getId(), location.getId());
+        Assertions.assertEquals(locationDto.getCountry(), location.getCountry());
+        Assertions.assertEquals(locationDto.getCity(), location.getCity());
+        Assertions.assertEquals(locationDto.getName(), location.getName());
+    }
+
     private Location getSampleLocation() {
         Location location = new Location();
         location.setId(this.random.nextLong());
@@ -117,5 +144,14 @@ public class LocationControllerTest {
         location.setCity(UUID.randomUUID().toString());
         location.setCountry(UUID.randomUUID().toString());
         return location;
+    }
+
+    private LocationDto getSampleLocationDto() {
+        LocationDto locationDto = new LocationDto();
+        locationDto.setId(this.random.nextLong());
+        locationDto.setName(UUID.randomUUID().toString());
+        locationDto.setCity(UUID.randomUUID().toString());
+        locationDto.setCountry(UUID.randomUUID().toString());
+        return locationDto;
     }
 }
