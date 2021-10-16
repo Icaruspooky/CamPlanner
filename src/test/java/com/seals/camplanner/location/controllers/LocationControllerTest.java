@@ -2,6 +2,7 @@ package com.seals.camplanner.location.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.seals.camplanner.commons.TestUtils;
 import com.seals.camplanner.location.dto.LocationDto;
 import com.seals.camplanner.location.models.Location;
 import com.seals.camplanner.location.services.LocationService;
@@ -23,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 /**
  * Integration Tests for the Location endpoint. Uses MockMvc do simulate endpoint calls.
@@ -35,7 +35,7 @@ import java.util.UUID;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class LocationControllerTest {
+class LocationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,7 +49,7 @@ public class LocationControllerTest {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Test
-    public void findAllWhenEmptyTest() throws Exception {
+    void findAllWhenEmptyTest() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/location"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
@@ -57,8 +57,8 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void saveLocationTest() throws Exception {
-        Location location = this.getSampleLocation();
+    void saveLocationTest() throws Exception {
+        Location location = TestUtils.getSampleLocation(random);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/location")
                                                                       .contentType(MediaType.APPLICATION_JSON)
@@ -74,11 +74,11 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void findAllTest() throws Exception {
+    void findAllTest() throws Exception {
         List<Location> expected = new ArrayList<>();
-        expected.add(this.locationService.save(this.getSampleLocation()));
-        expected.add(this.locationService.save(this.getSampleLocation()));
-        expected.add(this.locationService.save(this.getSampleLocation()));
+        expected.add(this.locationService.save(TestUtils.getSampleLocation(random)));
+        expected.add(this.locationService.save(TestUtils.getSampleLocation(random)));
+        expected.add(this.locationService.save(TestUtils.getSampleLocation(random)));
 
         MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders.get("/location"))
                                        .andExpect(MockMvcResultMatchers.status().isOk())
@@ -94,8 +94,8 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void findByIdTest() throws Exception {
-        Location expected = this.locationService.save(this.getSampleLocation());
+    void findByIdTest() throws Exception {
+        Location expected = this.locationService.save(TestUtils.getSampleLocation(random));
 
         MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders.get("/location/{id}", expected.getId()))
                                        .andExpect(MockMvcResultMatchers.status().isOk())
@@ -107,8 +107,8 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void deleteByIdTest() throws Exception {
-        Location location = this.locationService.save(this.getSampleLocation());
+    void deleteByIdTest() throws Exception {
+        Location location = this.locationService.save(TestUtils.getSampleLocation(random));
 
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/location/{id}", location.getId()))
                     .andExpect(MockMvcResultMatchers.status().isOk());
@@ -116,8 +116,8 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void mappingLocationToLocationDtoTest() {
-        Location location = getSampleLocation();
+    void shouldMatchValuesMappingLocationToLocationDto() {
+        Location location = TestUtils.getSampleLocation(random);
         LocationDto locationDto = modelMapper.map(location, LocationDto.class);
 
         Assertions.assertEquals(location.getId(), locationDto.getId());
@@ -127,31 +127,13 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void mappingLocationDtoToLocationTest() {
-        LocationDto locationDto = getSampleLocationDto();
+    void shouldMatchValuesMappingLocationDtoToLocation() {
+        LocationDto locationDto = TestUtils.getSampleLocationDto(random);
         Location location =  modelMapper.map(locationDto, Location.class);
 
         Assertions.assertEquals(locationDto.getId(), location.getId());
         Assertions.assertEquals(locationDto.getCountry(), location.getCountry());
         Assertions.assertEquals(locationDto.getCity(), location.getCity());
         Assertions.assertEquals(locationDto.getName(), location.getName());
-    }
-
-    private Location getSampleLocation() {
-        Location location = new Location();
-        location.setId(this.random.nextLong());
-        location.setName(UUID.randomUUID().toString());
-        location.setCity(UUID.randomUUID().toString());
-        location.setCountry(UUID.randomUUID().toString());
-        return location;
-    }
-
-    private LocationDto getSampleLocationDto() {
-        LocationDto locationDto = new LocationDto();
-        locationDto.setId(this.random.nextLong());
-        locationDto.setName(UUID.randomUUID().toString());
-        locationDto.setCity(UUID.randomUUID().toString());
-        locationDto.setCountry(UUID.randomUUID().toString());
-        return locationDto;
     }
 }
