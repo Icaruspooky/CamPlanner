@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,17 +40,19 @@ public class EventController {
     }
 
     private EventDto toDto(Event event) {
-        return modelMapper.map(event, EventDto.class);
+        EventDto eventDto = modelMapper.map(event, EventDto.class);
+        eventDto.setLocationId(event.getLocation().getId());
+        return eventDto;
     }
 
     private Event fromDto(EventDto eventDto) {
         Event event = modelMapper.map(eventDto, Event.class);
-        Location location = locationService.find(eventDto.getLocation());
+        Location location = locationService.find(eventDto.getLocationId());
         event.setLocation(location);
         return event;
     }
 
     private List<EventDto> toEventDtoList(List<Event> events) {
-        return events.stream().map(event -> modelMapper.map(event, EventDto.class)).collect(Collectors.toList());
+        return events.stream().map(event -> modelMapper.map(event, EventDto.class)).toList();
     }
 }
