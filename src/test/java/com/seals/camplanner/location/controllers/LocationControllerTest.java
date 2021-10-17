@@ -2,15 +2,14 @@ package com.seals.camplanner.location.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.seals.camplanner.commons.TestUtils;
+import com.seals.camplanner.location.dto.LocationDto;
 import com.seals.camplanner.location.models.Location;
 import com.seals.camplanner.location.services.LocationService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +21,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Integration Tests for the Location endpoint. Uses MockMvc do simulate endpoint calls.
  *
@@ -32,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class LocationControllerTest {
+class LocationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,9 +45,11 @@ public class LocationControllerTest {
     private ObjectMapper mapper;
     @Autowired
     private LocationService locationService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Test
-    public void findAllWhenEmptyTest() throws Exception {
+    void findAllWhenEmptyTest() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/location"))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
@@ -52,8 +57,8 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void saveLocationTest() throws Exception {
-        Location location = this.getSampleLocation();
+    void saveLocationTest() throws Exception {
+        Location location = TestUtils.getSampleLocation();
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/location")
                                                                       .contentType(MediaType.APPLICATION_JSON)
@@ -69,11 +74,11 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void findAllTest() throws Exception {
+    void findAllTest() throws Exception {
         List<Location> expected = new ArrayList<>();
-        expected.add(this.locationService.save(this.getSampleLocation()));
-        expected.add(this.locationService.save(this.getSampleLocation()));
-        expected.add(this.locationService.save(this.getSampleLocation()));
+        expected.add(this.locationService.save(TestUtils.getSampleLocation()));
+        expected.add(this.locationService.save(TestUtils.getSampleLocation()));
+        expected.add(this.locationService.save(TestUtils.getSampleLocation()));
 
         MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders.get("/location"))
                                        .andExpect(MockMvcResultMatchers.status().isOk())
@@ -89,8 +94,8 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void findByIdTest() throws Exception {
-        Location expected = this.locationService.save(this.getSampleLocation());
+    void findByIdTest() throws Exception {
+        Location expected = this.locationService.save(TestUtils.getSampleLocation());
 
         MvcResult result = this.mockMvc.perform(MockMvcRequestBuilders.get("/location/{id}", expected.getId()))
                                        .andExpect(MockMvcResultMatchers.status().isOk())
@@ -102,20 +107,33 @@ public class LocationControllerTest {
     }
 
     @Test
-    public void deleteByIdTest() throws Exception {
-        Location location = this.locationService.save(this.getSampleLocation());
+    void deleteByIdTest() throws Exception {
+        Location location = this.locationService.save(TestUtils.getSampleLocation());
 
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/location/{id}", location.getId()))
                     .andExpect(MockMvcResultMatchers.status().isOk());
         Assertions.assertTrue(this.locationService.findAll().isEmpty());
     }
 
-    private Location getSampleLocation() {
-        Location location = new Location();
-        location.setId(this.random.nextLong());
-        location.setName(UUID.randomUUID().toString());
-        location.setCity(UUID.randomUUID().toString());
-        location.setCountry(UUID.randomUUID().toString());
-        return location;
+    @Test
+    void shouldMatchValuesMappingLocationToLocationDto() {
+        Location location = TestUtils.getSampleLocation();
+        LocationDto locationDto = modelMapper.map(location, LocationDto.class);
+
+        Assertions.assertEquals(location.getId(), locationDto.getId());
+        Assertions.assertEquals(location.getCountry(), locationDto.getCountry());
+        Assertions.assertEquals(location.getCity(), locationDto.getCity());
+        Assertions.assertEquals(location.getName(), locationDto.getName());
+    }
+
+    @Test
+    void shouldMatchValuesMappingLocationDtoToLocation() {
+        LocationDto locationDto = TestUtils.getSampleLocationDto();
+        Location location =  modelMapper.map(locationDto, Location.class);
+
+        Assertions.assertEquals(locationDto.getId(), location.getId());
+        Assertions.assertEquals(locationDto.getCountry(), location.getCountry());
+        Assertions.assertEquals(locationDto.getCity(), location.getCity());
+        Assertions.assertEquals(locationDto.getName(), location.getName());
     }
 }
