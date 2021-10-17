@@ -5,18 +5,30 @@ import com.seals.camplanner.event.models.Event;
 import com.seals.camplanner.event.services.EventService;
 import com.seals.camplanner.location.models.Location;
 import com.seals.camplanner.location.services.LocationService;
-import lombok.RequiredArgsConstructor;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 public class EventController {
     private final EventService eventService;
-    private final LocationService locationService;
     private final ModelMapper modelMapper;
+
+    public EventController(EventService eventService, LocationService locationService, ModelMapper modelMapper) {
+        this.eventService = eventService;
+        this.modelMapper = modelMapper;
+
+        Converter<Long, Location> converter = new AbstractConverter<>() {
+            @Override
+            protected Location convert(Long locationId) {
+                return locationService.find(locationId);
+            }
+        };
+        this.modelMapper.addConverter(converter);
+    }
 
     @GetMapping("/event")
     public List<EventDto> getEvents() {
@@ -40,16 +52,11 @@ public class EventController {
     }
 
     private EventDto toDto(Event event) {
-        EventDto eventDto = modelMapper.map(event, EventDto.class);
-        eventDto.setLocationId(event.getLocation().getId());
-        return eventDto;
+        return modelMapper.map(event, EventDto.class);
     }
 
     private Event fromDto(EventDto eventDto) {
-        Event event = modelMapper.map(eventDto, Event.class);
-        Location location = locationService.find(eventDto.getLocationId());
-        event.setLocation(location);
-        return event;
+        return modelMapper.map(eventDto, Event.class);
     }
 
     private List<EventDto> toEventDtoList(List<Event> events) {

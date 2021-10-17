@@ -24,6 +24,7 @@ public class CamPlannerApplication {
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();

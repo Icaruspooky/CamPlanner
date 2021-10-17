@@ -6,16 +6,12 @@ import com.seals.camplanner.event.models.Event;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Random;
+import java.time.temporal.ChronoUnit;
 
-public class EventControllerTest {
-
-    @Autowired
-    private Random random;
+class EventControllerTest {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
@@ -33,12 +29,13 @@ public class EventControllerTest {
 
     private Event getSampleEvent() {
         Event event = new Event();
-        Timestamp starts = Timestamp.from(Instant.ofEpochSecond(random.nextLong()));
-        Timestamp ends = Timestamp.valueOf(starts.toLocalDateTime().plusDays(2));
+        Instant now = Instant.now();
+        Timestamp starts = Timestamp.from(now);
+        Timestamp ends = Timestamp.from(now.plus(2, ChronoUnit.DAYS));
         event.setEventDate(starts);
         event.setStarts(starts);
         event.setEnds(ends);
-        event.setLocation(TestUtils.getSampleLocation(random));
+        event.setLocation(TestUtils.getSampleLocation());
         return event;
     }
 
