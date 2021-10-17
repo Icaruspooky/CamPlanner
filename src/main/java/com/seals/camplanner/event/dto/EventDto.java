@@ -12,5 +12,5 @@ public class EventDto {
     private Timestamp eventDate;
     private Timestamp starts;
     private Timestamp ends;
-    private Long location;
+    private Long locationId;
 }
