@@ -26,7 +26,7 @@ public class EventService {
         newEvent.setEventDate(event.getEventDate());
         newEvent.setStarts(event.getStarts());
         newEvent.setEnds(event.getEnds());
-        Location location = locationService.find(event.getLocation());
+        Location location = locationService.findById(event.getLocation());
         newEvent.setLocation(location);
         return eventRepository.save(newEvent);
     }

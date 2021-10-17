@@ -1,16 +1,15 @@
 package com.seals.camplanner.location.models;
 
+import com.seals.camplanner.commons.models.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.*;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-public class Location {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class Location extends BaseEntity {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
