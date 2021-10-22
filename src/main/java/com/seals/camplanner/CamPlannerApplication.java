@@ -1,10 +1,12 @@
 package com.seals.camplanner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Random;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.util.Random;
 
 @SpringBootApplication
 public class CamPlannerApplication {
@@ -21,5 +23,10 @@ public class CamPlannerApplication {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }
