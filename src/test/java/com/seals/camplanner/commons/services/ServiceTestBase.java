@@ -15,7 +15,7 @@ public abstract class ServiceTestBase<T extends BaseEntity> {
 
     public static final Random RANDOM = new Random();
 
-    protected abstract BaseService<T> getService();
+    protected abstract BaseServiceImpl<T> getService();
 
     protected abstract JpaRepository<T, Long> getRepositoryMock();
 

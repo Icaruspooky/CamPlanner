@@ -1,5 +1,6 @@
 package com.seals.camplanner.commons.models;
 
+import com.seals.camplanner.commons.services.BaseServiceImpl;
 import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -7,10 +8,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Entity class with audit information.
- * TODO This needs user context before it can be implemented.
+ * TODO This needs user context before it can be fully implemented with
+ * {@link BaseServiceImpl}
+ *
+ * <p>Basic Auditable Entity, including date and user information for when the record was created and last modified.</p>
+ *
+ * <p>Other entities can just extend this to have standard auditing columns.</p>
+ *
+ * <p>If using lombok @{@link Data} or @{@link lombok.EqualsAndHashCode} don't forget to include the
+ * 'callSuper = true' parameter in order for the equals and hashcode to consider inherited fields.</p>
  */
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 @MappedSuperclass

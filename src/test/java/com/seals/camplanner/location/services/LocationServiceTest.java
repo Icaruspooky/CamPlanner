@@ -1,6 +1,6 @@
 package com.seals.camplanner.location.services;
 
-import com.seals.camplanner.commons.services.BaseService;
+import com.seals.camplanner.commons.services.BaseServiceImpl;
 import com.seals.camplanner.commons.services.ServiceTestBase;
 import com.seals.camplanner.location.models.Location;
 import com.seals.camplanner.location.repositories.LocationRepository;
@@ -26,7 +26,7 @@ public class LocationServiceTest extends ServiceTestBase<Location> {
     private LocationService locationService;
 
     @Override
-    protected BaseService<Location> getService() {
+    protected BaseServiceImpl<Location> getService() {
         return this.locationService;
     }
 
