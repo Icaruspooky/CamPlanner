@@ -24,7 +24,7 @@ public class EventController {
         Converter<Long, Location> converter = new AbstractConverter<>() {
             @Override
             protected Location convert(Long locationId) {
-                return locationService.find(locationId);
+                return locationService.findById(locationId);
             }
         };
         this.modelMapper.addConverter(converter);

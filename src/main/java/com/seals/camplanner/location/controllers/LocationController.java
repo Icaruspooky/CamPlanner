@@ -27,7 +27,7 @@ public class LocationController {
 
     @GetMapping("/location/{id}")
     public LocationDto getLocation(@PathVariable("id") Long id) {
-        return toDto(locationService.find(id));
+        return toDto(locationService.findById(id));
     }
 
     @DeleteMapping("/location/{id}")
