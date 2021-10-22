@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * TODO This needs user context before it can be fully implemented with
+ * TODO This needs user context before it can be fully implemented with.
  * {@link BaseServiceImpl}
  *
  * <p>Basic Auditable Entity, including date and user information for when the record was created and last modified.</p>
