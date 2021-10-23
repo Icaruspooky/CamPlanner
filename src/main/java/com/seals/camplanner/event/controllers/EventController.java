@@ -1,5 +1,6 @@
 package com.seals.camplanner.event.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.seals.camplanner.event.dto.EventDto;
 import com.seals.camplanner.event.models.Event;
 import com.seals.camplanner.event.services.EventService;
@@ -10,6 +11,7 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @RestController
@@ -43,12 +45,12 @@ public class EventController {
 
     @GetMapping("/event/{id}")
     public EventDto getEvent(@PathVariable("id") Long id) {
-        return toDto(eventService.find(id));
+        return toDto(eventService.findById(id));
     }
 
     @DeleteMapping("/event/{id}")
     public void deleteEvent(@PathVariable("id") Long id) {
-        eventService.delete(id);
+        eventService.deleteById(id);
     }
 
     private EventDto toDto(Event event) {
@@ -60,6 +62,8 @@ public class EventController {
     }
 
     private List<EventDto> toEventDtoList(List<Event> events) {
-        return events.stream().map(event -> modelMapper.map(event, EventDto.class)).toList();
+        Type type = new TypeReference<List<EventDto>>() {
+        }.getType();
+        return modelMapper.map(events, type);
     }
 }
