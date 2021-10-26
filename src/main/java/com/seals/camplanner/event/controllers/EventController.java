@@ -29,7 +29,7 @@ public class EventController {
 
         Converter<Long, Location> converter = new AbstractConverter<>() {
             @Override
-            protected Location convert(Long locationId){
+            protected Location convert(Long locationId) {
                 Location location;
                 try {
                     location = locationService.findById(locationId);
