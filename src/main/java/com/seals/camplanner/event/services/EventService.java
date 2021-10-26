@@ -1,31 +1,25 @@
 package com.seals.camplanner.event.services;
 
+import com.seals.camplanner.commons.services.BaseServiceImpl;
 import com.seals.camplanner.event.models.Event;
 import com.seals.camplanner.event.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class EventService {
+public class EventService extends BaseServiceImpl<Event> {
+    public static final String ENTITY_NAME = "Event";
     private final EventRepository eventRepository;
 
-    public List<Event> findAll() {
-        return eventRepository.findAll();
+    @Override
+    protected JpaRepository<Event, Long> getRepository() {
+        return this.eventRepository;
     }
 
-    public Event save(Event event) {
-        return eventRepository.save(event);
-    }
-
-    //TODO create customized exeption
-    public Event find(Long id) {
-        return eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found"));
-    }
-
-    public void delete(Long id) {
-        eventRepository.deleteById(id);
+    @Override
+    public String getEntityName() {
+        return ENTITY_NAME;
     }
 }
