@@ -111,7 +111,7 @@ class LocationControllerTest {
         Location location = this.locationService.save(LocationTestUtils.getSampleLocation());
 
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/location/{id}", location.getId()))
-                    .andExpect(MockMvcResultMatchers.status().isOk());
+                    .andExpect(MockMvcResultMatchers.status().isNoContent());
         Assertions.assertTrue(this.locationService.findAll().isEmpty());
     }
 
