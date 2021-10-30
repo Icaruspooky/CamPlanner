@@ -48,6 +48,7 @@ public class EventController {
     }
 
     @PostMapping("/event")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public EventDto saveEvent(@RequestBody EventDto eventDto) throws LocationUnavaliableException {
         Event event;
         try {

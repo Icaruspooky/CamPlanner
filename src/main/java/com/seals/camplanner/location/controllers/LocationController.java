@@ -22,6 +22,7 @@ public class LocationController {
     }
 
     @PostMapping("/location")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public LocationDto saveLocation(@RequestBody LocationDto locationDto) {
         return toDto(locationService.save(fromDto(locationDto)));
     }
