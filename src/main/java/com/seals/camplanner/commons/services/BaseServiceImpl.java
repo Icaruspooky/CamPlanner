@@ -54,7 +54,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
         try {
             this.getRepository().deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new NotFoundException(this.getNotFoundMessage(id));
+            throw new NotFoundException(this.getNotFoundMessage(id), e);
         }
         log.info(String.format("Deleted %s of id: %s", this.getEntityName(), id));
     }

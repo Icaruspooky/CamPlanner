@@ -34,7 +34,7 @@ public class EventController {
                 try {
                     location = locationService.findById(locationId);
                 } catch (NotFoundException e) {
-                    throw new LocationUnavaliableException(locationId);
+                    throw new LocationUnavaliableException(locationId, e);
                 }
                 return location;
             }
