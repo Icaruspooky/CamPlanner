@@ -65,7 +65,7 @@ class LocationControllerTest {
                                                                       .content(
                                                                               this.mapper.writeValueAsString(location));
         this.mockMvc.perform(request)
-                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.status().isCreated())
                     .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.any(Number.class)))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.city", Matchers.is(location.getCity())))
@@ -111,7 +111,7 @@ class LocationControllerTest {
         Location location = this.locationService.save(LocationTestUtils.getSampleLocation());
 
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/location/{id}", location.getId()))
-                    .andExpect(MockMvcResultMatchers.status().isOk());
+                    .andExpect(MockMvcResultMatchers.status().isNoContent());
         Assertions.assertTrue(this.locationService.findAll().isEmpty());
     }
 

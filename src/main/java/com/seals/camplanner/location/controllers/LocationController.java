@@ -5,6 +5,7 @@ import com.seals.camplanner.location.models.Location;
 import com.seals.camplanner.location.services.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class LocationController {
     }
 
     @PostMapping("/location")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public LocationDto saveLocation(@RequestBody LocationDto locationDto) {
         return toDto(locationService.save(fromDto(locationDto)));
     }
@@ -31,8 +33,15 @@ public class LocationController {
     }
 
     @DeleteMapping("/location/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteLocation(@PathVariable("id") Long id) {
         locationService.deleteById(id);
+    }
+
+    @DeleteMapping("/location")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteLocations() {
+        locationService.deleteAll();
     }
 
     private LocationDto toDto(Location location) {

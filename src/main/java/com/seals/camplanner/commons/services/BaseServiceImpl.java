@@ -1,14 +1,20 @@
 package com.seals.camplanner.commons.services;
 
+import com.seals.camplanner.commons.exceptions.NotFoundException;
 import com.seals.camplanner.commons.models.BaseEntity;
-import java.util.List;
-import java.util.NoSuchElementException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * {@link BaseService} implemetation.
  */
+@Slf4j
 public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseService<T> {
+
+    private static final String NOT_FOUND_MESSAGE = "Unable to find %s with supplied id (%s)";
 
     protected abstract JpaRepository<T, Long> getRepository();
 
@@ -21,9 +27,7 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
     public T findById(Long id) {
         return this.getRepository()
                    .findById(id)
-                   .orElseThrow(() -> new NoSuchElementException(
-                           String.format("Unable to find %s with supplied id", this.getEntityName())
-                   ));
+                   .orElseThrow(() -> new NotFoundException(this.getNotFoundMessage(id)));
     }
 
     /**
@@ -47,7 +51,12 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
      */
     @Override
     public void deleteById(Long id) {
-        this.getRepository().deleteById(id);
+        try {
+            this.getRepository().deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException(this.getNotFoundMessage(id), e);
+        }
+        log.info(String.format("Deleted %s of id: %s", this.getEntityName(), id));
     }
 
     /**
@@ -56,5 +65,10 @@ public abstract class BaseServiceImpl<T extends BaseEntity> implements BaseServi
     @Override
     public void deleteAll() {
         this.getRepository().deleteAll();
+        log.info(String.format("All instances of %s were deleted", this.getEntityName()));
+    }
+
+    public String getNotFoundMessage(Long id) {
+        return String.format(NOT_FOUND_MESSAGE, this.getEntityName(), id);
     }
 }
