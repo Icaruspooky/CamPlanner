@@ -1,9 +1,11 @@
 package com.seals.camplanner.commons.models;
 
-import com.seals.camplanner.commons.services.BaseServiceImpl;
 import java.sql.Timestamp;
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+
+import com.seals.camplanner.commons.services.BaseServiceImpl;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
