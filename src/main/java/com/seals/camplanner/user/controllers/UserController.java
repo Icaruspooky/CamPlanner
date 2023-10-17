@@ -29,7 +29,7 @@ public class UserController {
         return toUserDtoList(userService.findAll());
     }
 
-    @PostMapping("/user")
+    @PostMapping("/user/register")
     @ResponseStatus(value = HttpStatus.CREATED)
     public UserDto saveUser(@RequestBody UserDto userDto) {
         return toDto(userService.save(fromDto(userDto)));
