@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,34 +20,35 @@ import com.seals.camplanner.location.services.LocationService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequestMapping("location")
 @RequiredArgsConstructor
 public class LocationController {
     private final LocationService locationService;
     private final ModelMapper modelMapper;
 
-    @GetMapping("/location")
+    @GetMapping()
     public List<LocationDto> getLocations() {
         return toLocationDtoList(locationService.findAll());
     }
 
-    @PostMapping("/location")
+    @PostMapping()
     @ResponseStatus(value = HttpStatus.CREATED)
     public LocationDto saveLocation(@RequestBody LocationDto locationDto) {
         return toDto(locationService.save(fromDto(locationDto)));
     }
 
-    @GetMapping("/location/{id}")
+    @GetMapping("/{id}")
     public LocationDto getLocation(@PathVariable("id") Long id) {
         return toDto(locationService.findById(id));
     }
 
-    @DeleteMapping("/location/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteLocation(@PathVariable("id") Long id) {
         locationService.deleteById(id);
     }
 
-    @DeleteMapping("/location")
+    @DeleteMapping()
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteLocations() {
         locationService.deleteAll();

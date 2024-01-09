@@ -1,12 +1,14 @@
 package com.seals.camplanner.commons.services;
 
-import com.seals.camplanner.commons.exceptions.NotFoundException;
-import com.seals.camplanner.commons.models.BaseEntity;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.seals.camplanner.commons.exceptions.NotFoundException;
+import com.seals.camplanner.commons.models.BaseEntity;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * {@link BaseService} implemetation.
