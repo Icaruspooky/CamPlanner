@@ -1,8 +1,10 @@
 package com.seals.camplanner.location.controllers;
 
-import java.util.List;
+import java.lang.reflect.Type;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.seals.camplanner.location.dto.LocationDto;
 import com.seals.camplanner.location.models.Location;
 import com.seals.camplanner.location.services.LocationService;
@@ -27,8 +30,8 @@ public class LocationController {
     private final ModelMapper modelMapper;
 
     @GetMapping()
-    public List<LocationDto> getLocations() {
-        return toLocationDtoList(locationService.findAll());
+    public Page<LocationDto> getLocations(Pageable pageable) {
+        return toLocationDtoList(locationService.findAll(pageable));
     }
 
     @PostMapping()
@@ -62,7 +65,9 @@ public class LocationController {
         return modelMapper.map(locationDto, Location.class);
     }
 
-    private List<LocationDto> toLocationDtoList(List<Location> locations) {
-        return locations.stream().map(location -> modelMapper.map(location, LocationDto.class)).toList();
+    private Page<LocationDto> toLocationDtoList(Page<Location> locations) {
+        Type type = new TypeReference<Page<LocationDto>>() {
+        }.getType();
+        return modelMapper.map(locations, type);
     }
 }

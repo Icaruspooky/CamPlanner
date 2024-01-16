@@ -1,12 +1,13 @@
 package com.seals.camplanner.event.controllers;
 
 import java.lang.reflect.Type;
-import java.util.List;
 
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,8 +53,8 @@ public class EventController {
     }
 
     @GetMapping()
-    public List<EventDto> getEvents() {
-        return toEventDtoList(eventService.findAll());
+    public Page<EventDto> getEvents(Pageable pageable) {
+        return toEventDtoList(eventService.findAll(pageable));
     }
 
     @PostMapping()
@@ -96,8 +97,8 @@ public class EventController {
         return modelMapper.map(eventDto, Event.class);
     }
 
-    private List<EventDto> toEventDtoList(List<Event> events) {
-        Type type = new TypeReference<List<EventDto>>() {
+    private Page<EventDto> toEventDtoList(Page<Event> events) {
+        Type type = new TypeReference<Page<EventDto>>() {
         }.getType();
         return modelMapper.map(events, type);
     }

@@ -2,20 +2,16 @@ package com.seals.camplanner.commons.config;
 
 import javax.sql.DataSource;
 
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableJpaRepositories(basePackages="com.seals.camplanner.*")
 public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -46,12 +43,13 @@ public class WebSecurityConfig {
 
     @Bean
     public DataSource dataSource() {
-        return new EmbeddedDatabaseBuilder()
-               .setType(EmbeddedDatabaseType.H2)
-               .addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
-               .build();
+        return DataSourceBuilder.create()
+                                .username("postgres")
+                                .password("postgres")
+                                .url("jdbc:postgresql://localhost:5432/camplanner1")
+                                .build();
     }
-
+/*
     @Bean
     public UserDetailsManager users() {
         UserDetails user = User.builder()
@@ -61,6 +59,6 @@ public class WebSecurityConfig {
         users.createUser(user);
         return users;
     }
-
+*/
 
 }
