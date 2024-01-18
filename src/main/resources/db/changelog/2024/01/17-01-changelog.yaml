@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1705479298072-4
+      author: icaro (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: events
+            constraintName: fk_events_on_location
+  - changeSet:
+      id: 1705479298072-1
+      author: icaro (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_locations
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: country
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: city
+                  type: VARCHAR(255)
+            tableName: locations
+  - changeSet:
+      id: 1705479298072-2
+      author: icaro (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: uc_locations_name
+            tableName: locations
+  - changeSet:
+      id: 1705479298072-3
+      author: icaro (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: location_id
+            baseTableName: events
+            constraintName: FK_EVENTS_ON_LOCATION
+            referencedColumnNames: id
+            referencedTableName: locations
+  - changeSet:
+      id: 1705479298072-6
+      author: icaro (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: location
+

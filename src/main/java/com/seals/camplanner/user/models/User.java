@@ -1,8 +1,10 @@
 package com.seals.camplanner.user.models;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.seals.camplanner.commons.models.BaseEntity;
@@ -15,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Table(name = "users")
+@Entity(name = "User")
 public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "username", unique = true)
@@ -36,26 +38,26 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

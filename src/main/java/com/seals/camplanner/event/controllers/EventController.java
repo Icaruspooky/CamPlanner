@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,6 +59,7 @@ public class EventController {
     }
 
     @PostMapping()
+    @Transactional
     @ResponseStatus(value = HttpStatus.CREATED)
     public EventDto saveEvent(@RequestBody EventDto eventDto) throws LocationUnavaliableException {
         Event event;
@@ -78,12 +80,14 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteEvent(@PathVariable("id") Long id) {
         eventService.deleteById(id);
     }
 
     @DeleteMapping()
+    @Transactional
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteEvents() {
         eventService.deleteAll();

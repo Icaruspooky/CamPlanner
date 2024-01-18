@@ -18,12 +18,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "Event")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @Table(name = "events")
+@Entity(name = "Event")
 public class Event extends BaseEntity {
     @Column(name = "private_event", nullable = false)
     private boolean privateEvent;

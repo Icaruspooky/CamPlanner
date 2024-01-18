@@ -1,9 +1,24 @@
 #Spring boot configuration
 spring:
+  main:
+    allow-bean-definition-overriding: true
   #JPA properties
   jpa:
     show-sql: true
     open-in-view: false
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: none
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/camplanner1
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+
+  sql:
+    init:
+      platform: postgres
 
 #Server configuration
 server:
