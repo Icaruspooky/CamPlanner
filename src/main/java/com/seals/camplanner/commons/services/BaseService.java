@@ -4,6 +4,9 @@ import com.seals.camplanner.commons.models.BaseEntity;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * Defines the methods that Generic Services should implement.
  *
@@ -27,6 +30,8 @@ public interface BaseService<T extends BaseEntity> {
      * @return list of entities
      */
     List<T> findAll();
+
+    Page<T> findAll(Pageable pageable);
 
     /**
      * Saves a given entity. Use the returned instance for further operations as the save operation might have

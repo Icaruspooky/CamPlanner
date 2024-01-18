@@ -1,8 +1,8 @@
 package com.seals.camplanner.event.dto;
 
-import lombok.Data;
-
 import java.sql.Timestamp;
+
+import lombok.Data;
 
 @Data
 public class EventDto {

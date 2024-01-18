@@ -14,12 +14,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "location")
+@Table(name = "locations")
+@Entity(name = "Location")
 public class Location extends BaseEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
