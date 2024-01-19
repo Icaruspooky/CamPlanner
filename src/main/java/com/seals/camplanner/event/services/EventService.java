@@ -1,11 +1,13 @@
 package com.seals.camplanner.event.services;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+
 import com.seals.camplanner.commons.services.BaseServiceImpl;
 import com.seals.camplanner.event.models.Event;
 import com.seals.camplanner.event.repositories.EventRepository;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
