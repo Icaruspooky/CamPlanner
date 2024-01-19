@@ -1,15 +1,17 @@
 package com.seals.camplanner.commons.services;
 
-import com.seals.camplanner.commons.models.BaseEntity;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.seals.camplanner.commons.models.BaseEntity;
 
 public abstract class ServiceTestBase<T extends BaseEntity> {
 
